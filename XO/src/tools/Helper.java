@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Helper {
+    //Метод для переключения между экранами
     public static void goTo(Class c, Button button, String path) {
         Stage stage = (Stage) button.getScene().getWindow();
         stage.close();
