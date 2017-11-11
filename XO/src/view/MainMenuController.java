@@ -20,7 +20,7 @@ public class MainMenuController {
 
     @FXML
     public void onStartBtnClicked() {
-        Helper.goTo(MainMenu.class, startBtn, "/view/gameMode.fxml");
+        Helper.goTo(MainMenu.class, startBtn, "/view/gameField.fxml");
     }
 
     @FXML
