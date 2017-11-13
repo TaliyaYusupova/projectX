@@ -2,6 +2,7 @@ package view;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -40,7 +41,6 @@ public class GameFieldController {
                         }
                         System.out.println("Node: " + node + " at " + c1 + "/" + c2);
 
-
                         makeMove(c1, c2);
                         insertImage((ImageView) node);
                         if (win()) {
@@ -65,6 +65,7 @@ public class GameFieldController {
 
 
     private boolean win() {
+
         return false;
     }
 
@@ -82,12 +83,15 @@ public class GameFieldController {
     private void insertImage(ImageView cell) {
         switch (counter) {
             case 1:
+                cell.setImage(new Image(""));
                 //вставить х
                 break;
             case 2:
+                cell.setImage(new Image(""));
                 //вставить о
                 break;
             case 3:
+                cell.setImage(new Image(""));
                 //вставить треугольник
                 break;
 
@@ -95,6 +99,7 @@ public class GameFieldController {
     }
 
     private void stopGameAndDisplayWinner() {
+
     }
 
 

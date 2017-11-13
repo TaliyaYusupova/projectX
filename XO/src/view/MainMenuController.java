@@ -2,7 +2,7 @@ package view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import main.MainMenu;
+import main.Main;
 import tools.Helper;
 
 public class MainMenuController {
@@ -20,7 +20,7 @@ public class MainMenuController {
 
     @FXML
     public void onStartBtnClicked() {
-        Helper.goTo(MainMenu.class, startBtn, "/view/gameField.fxml");
+        Helper.goTo(Main.class, startBtn, "/view/gameMode.fxml");
     }
 
     @FXML
