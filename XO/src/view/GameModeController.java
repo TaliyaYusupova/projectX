@@ -21,7 +21,7 @@ public class GameModeController {
 
     @FXML
     public void onBotBtnClicked() {
-        Helper.goTo(getClass(), botBtn, "/view/gameField.fxml");
+        //Helper.goTo(getClass(), botBtn, "/view/gameField.fxml");
 
     }
 }

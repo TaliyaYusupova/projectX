@@ -14,14 +14,13 @@ public class Helper {
         Stage stage = (Stage) button.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(c.getResource(path));
         Parent root = null;
+
         try {
             root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        stage.setTitle(Constants.APP_NAME);
         stage.setScene(new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         stage.show();
     }

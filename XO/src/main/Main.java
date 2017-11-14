@@ -20,6 +20,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/mainMenu.fxml"));
         primaryStage.setTitle(Constants.APP_NAME);
         primaryStage.setScene(new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+        primaryStage.setMinHeight(Constants.SCREEN_HEIGHT);
+        primaryStage.setMinWidth(Constants.SCREEN_WIDTH);
         primaryStage.show();
 
     }

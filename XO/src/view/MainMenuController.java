@@ -15,7 +15,6 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-
     }
 
     @FXML
