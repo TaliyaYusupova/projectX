@@ -28,16 +28,16 @@ public class Main extends Application {
         img.setFitWidth(900);
         root.getChildren().add(img);
 
-        MenuItem newGame = new MenuItem("НОВАЯ ИГРА");
-        MenuItem options = new MenuItem("НАСТРОЙКИ");
-        MenuItem exitGame = new MenuItem("ВЫХОД");
+        MenuItem newGame = new MenuItem("NEW GAME");
+        MenuItem options = new MenuItem("SETTINGS");
+        MenuItem exitGame = new MenuItem("EXIT");
         SubMenu mainMenu = new SubMenu(
                 newGame,options,exitGame
         );
-        MenuItem sound = new MenuItem("ЗВУК");
-        MenuItem video = new MenuItem("ВИДЕО");
-        MenuItem keys = new MenuItem("УПРАВЛЕНИЕ");
-        MenuItem optionsBack = new MenuItem("НАЗАД");
+        MenuItem sound = new MenuItem("SOUND");
+        MenuItem video = new MenuItem("VIDEO");
+        MenuItem keys = new MenuItem("CONTROL");
+        MenuItem optionsBack = new MenuItem("BACK");
         SubMenu optionsMenu = new SubMenu(
                 sound,video,keys,optionsBack
         );
