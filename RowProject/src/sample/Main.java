@@ -2,7 +2,9 @@ package sample;
 
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,21 +38,26 @@ public class Main extends Application {
         );
         MenuItem sound = new MenuItem("SOUND");
         MenuItem video = new MenuItem("VIDEO");
-        MenuItem keys = new MenuItem("CONTROL");
         MenuItem optionsBack = new MenuItem("BACK");
         SubMenu optionsMenu = new SubMenu(
-                sound,video,keys,optionsBack
+                sound,video,optionsBack
         );
-        MenuItem NG1 = new MenuItem("3 X 3");
         MenuItem NG2 = new MenuItem("2 X 2");
         MenuItem NG3 = new MenuItem("GAME WITH BOT");
         MenuItem NG4 = new MenuItem("BACK");
         SubMenu newGameMenu = new SubMenu(
-                NG1,NG2,NG3,NG4
+                NG2,NG3,NG4
         );
         MenuBox menuBox = new MenuBox(mainMenu);
 
         newGame.setOnMouseClicked(event->menuBox.setSubMenu(newGameMenu));
+        NG2.setOnMouseClicked(event -> {
+            try {
+                GoGame(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         options.setOnMouseClicked(event->menuBox.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event-> System.exit(0));
         optionsBack.setOnMouseClicked(event->menuBox.setSubMenu(mainMenu));
@@ -59,7 +66,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root,900,600);
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
+            if (event.getCode() == KeyCode.ENTER) {
                 FadeTransition ft = new FadeTransition(Duration.seconds(1),menuBox);
                 if (!menuBox.isVisible()) {
                     ft.setFromValue(0);
@@ -82,12 +89,12 @@ public class Main extends Application {
     }
     private static class MenuItem extends StackPane{
         public  MenuItem(String name){
-            Rectangle bg = new Rectangle(200,20,Color.WHITE);
+            Rectangle bg = new Rectangle(400,100,Color.WHITE);
             bg.setOpacity(0.5);
 
             Text text = new Text(name);
             text.setFill(Color.WHITE);
-            text.setFont(Font.font("Arial",FontWeight.BOLD,14));
+            text.setFont(Font.font("Arial",FontWeight.BOLD,27));
 
             setAlignment(Pos.CENTER);
             getChildren().addAll(bg,text);
@@ -124,12 +131,19 @@ public class Main extends Application {
 
     private static class SubMenu extends VBox{
         public SubMenu(MenuItem...items){
-            setSpacing(15);
-            setTranslateY(100);
-            setTranslateX(50);
+            setSpacing(20);
+            setTranslateY(150);
+            setTranslateX(250);
             for(MenuItem item : items){
                 getChildren().addAll(item);
             }
         }
+    }
+    public void GoGame(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("GAME");
+        Scene scene = new Scene(root, 900, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

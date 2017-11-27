@@ -15,7 +15,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <ImageView fitHeight="600.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="600.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@background.png" />
          </image></ImageView>
