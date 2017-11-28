@@ -28,9 +28,7 @@ public class MainMenuController {
     }
 
     @FXML
-    public void onExitBtnClicked() {
-
-    }
+    public void onExitBtnClicked() {}
 
 
 }
