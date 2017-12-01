@@ -21,7 +21,6 @@ public class GameFieldController {
     public static int[][] gameField = new int[GAME_FIELD_WIDTH][GAME_FIELD_LENGTH];
     //Для идентификации того, кто делает ход
     private int counter = 1;
-    private final int WIN_COUNT = 2;
     private int count = 0;
 
     private enum GAME_MODE {
@@ -37,15 +36,6 @@ public class GameFieldController {
 
         GAME_MODE mode = GAME_MODE.threePlayers;
 
-        switch (mode) {
-            case onePlayer:
-                bot1 = new Bot(3);
-                break;
-            case twoPlayers:
-                bot1 = new Bot(2);
-                bot2 = new Bot(3);
-                break;
-        }
 
         //Отслеживание нажатий
         pane.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
@@ -146,6 +136,7 @@ public class GameFieldController {
     //Проверить, выиграл или нет
     private boolean win() {
         //Проверка по горизонтали
+        int WIN_COUNT = 2;
         for (int i = 0; i < gameField.length; i++) {
             for (int k = 0; k < gameField.length - 1; k++) {
                 if (gameField[i][k] == gameField[i][k + 1] && gameField[i][k] != 0 && gameField[i][k + 1] != 0) {
@@ -178,106 +169,27 @@ public class GameFieldController {
 
         //Проверка по главной диагонали
         if (checkDiagonals()) {
+            System.out.println("dig");
             return true;
         }
-
-        //rotateMatrix();
-
-        //Проверка по побочной диагонали
-        /*if (checkDiagonals()) {
-            return true;
-        }*/
-
-        //rotateMatrix();
 
         return false;
     }
 
     private boolean checkDiagonals() {
-        for (int i = 0; i < gameField.length - 1; i++) {
-            if (gameField[i][i] == gameField[i + 1][i + 1] && gameField[i][i] != 0 && gameField[i + 1][i + 1] != 0) {
-                count++;
-            }
+        int sum1 = 1;
+        for (int i = 0; i < gameField.length; i++) {
+            sum1 *= gameField[i][i];
         }
 
-        if (count >= WIN_COUNT ) {
-            return true;
-        } else {
-            count = 0;
+        int sum2 = 1;
+        for (int i = 0; i < gameField.length; i++) {
+            sum2 *= gameField[i][gameField.length - i - 1];
         }
 
-        /*int i = 0;
-        int k = gameField.length - 1;
-        while (k >= 0 && i <= gameField.length - 1) {
-            try {
-                if (gameField[i][k] == gameField[i + 1][k - 1]) {
-                    count++;
-                }
-                i++;
-                k--;
-            }catch (ArrayIndexOutOfBoundsException ignored){
-                return false;
-            }
-
-        }
-        if (count >= WIN_COUNT - 1) {
-            return true;
-        }*/
-
-
-
-
-
-
-        /*int N = gameField.length;
-        int M = gameField.length;
-        count = 0;
-        int previous = 0;
-        int current = 0;
-        for (int i = 0; i < N; ++i)
-        {
-            for (int j = 0; i + j < N - 1; ++j)
-            {
-                //count += gameField[i + j][j];
-                if (gameField[i+j][j] == gameField[i+j+1][j-1]){
-                    count++;
-                }
-            }
-            if (count >= WIN_COUNT + 1){
-                return true;
-            }else {
-                count = 0;
-            }
-        }
-        count = 0;
-        for (int i = 1; i < M; ++i)
-        {
-            for (int j = 0; i + j < M-1; ++j)
-            {
-                //count += gameField[j][i + j];
-                if (gameField[i+j][j] == gameField[i+j-1][j+1]){
-                    count++;
-                }
-            }
-            if (count >= WIN_COUNT + 1){
-                return true;
-            }else {
-                count = 0;
-            }
-        }*/
-
-        return false;
+        return sum1 == 1 || sum2 == 8;
     }
 
-    private void rotateMatrix() {
-        int[][] newGameField = new int[GAME_FIELD_LENGTH][GAME_FIELD_WIDTH];
-        for (int i = gameField.length - 1; i >= 0; i--) {
-            for (int k = gameField.length - 1; k >= 0; k--) {
-                newGameField[gameField.length - i - 1][gameField.length - k - 1] = gameField[i][k];
-            }
-        }
-        gameField = newGameField;
-    }
 
     //Обновляем счетчик
     private void updateCounter() {
@@ -305,10 +217,6 @@ public class GameFieldController {
                 case 2:
                     cell.setImage(new Image("/view/2.jpg"));
                     //вставить о
-                    break;
-                case 3:
-                    cell.setImage(new Image(""));
-                    //вставить треугольник
                     break;
 
             }

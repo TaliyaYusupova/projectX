@@ -14,6 +14,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -24,6 +26,8 @@ import javafx.util.Duration;
 import tools.Constants;
 import tools.Helper;
 import view.GameModeController;
+
+import java.io.File;
 
 public class Main extends Application {
     private Stage stage;
@@ -37,9 +41,14 @@ public class Main extends Application {
         Pane root = new Pane();
         Image image = new Image(getClass().getResourceAsStream("background.png"));
         ImageView img = new ImageView(image);
-        img.setFitHeight(600);
-        img.setFitWidth(900);
+        img.setFitHeight(Constants.SCREEN_HEIGHT);
+        img.setFitWidth(Constants.SCREEN_WIDTH);
         root.getChildren().add(img);
+
+        String file = "musicfile.mp3";
+        Media backgroundSound = new Media(new File(file).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(backgroundSound);
+        mediaPlayer.play();
 
         MenuItem newGame = new MenuItem("NEW GAME");
         MenuItem options = new MenuItem("SETTINGS");
@@ -75,7 +84,7 @@ public class Main extends Application {
         NG4.setOnMouseClicked(event-> menuBox.setSubMenu(mainMenu));
         root.getChildren().addAll(menuBox);
 
-        Scene scene = new Scene(root,900,600);
+        Scene scene = new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 FadeTransition ft = new FadeTransition(Duration.seconds(1),menuBox);
@@ -94,7 +103,7 @@ public class Main extends Application {
                 }
             }
         });
-        primaryStage.setTitle("Pause");
+        primaryStage.setTitle(Constants.APP_NAME);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -129,7 +138,7 @@ public class Main extends Application {
             MenuBox.subMenu = subMenu;
 
             setVisible(false);
-            Rectangle bg = new Rectangle(900,600,Color.LIGHTBLUE);
+            Rectangle bg = new Rectangle(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Color.LIGHTBLUE);
             bg.setOpacity(0.4);
             getChildren().addAll(bg, subMenu);
         }
@@ -153,7 +162,7 @@ public class Main extends Application {
     public void GoGame(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/gameField.fxml"));
         primaryStage.setTitle("GAME");
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
