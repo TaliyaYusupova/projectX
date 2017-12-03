@@ -1,16 +1,26 @@
-package view;
+package gamefield;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import tools.Helper;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import main.Main;
+import tools.Constants;
+
+import java.io.IOException;
 
 import static tools.Constants.GAME_FIELD_LENGTH;
 import static tools.Constants.GAME_FIELD_WIDTH;
@@ -18,25 +28,14 @@ import static tools.Constants.GAME_FIELD_WIDTH;
 public class GameFieldController {
     @FXML
     GridPane pane;
-    public static int[][] gameField = new int[GAME_FIELD_WIDTH][GAME_FIELD_LENGTH];
+    private static int[][] gameField = new int[GAME_FIELD_WIDTH][GAME_FIELD_LENGTH];
     //Для идентификации того, кто делает ход
     private int counter = 1;
     private int count = 0;
 
-    private enum GAME_MODE {
-        threePlayers, twoPlayers, onePlayer
-    }
-
-    private Bot bot1;
-    private Bot bot2;
-
     @FXML
     public void initialize() {
         fillGameField();
-
-        GAME_MODE mode = GAME_MODE.threePlayers;
-
-
         //Отслеживание нажатий
         pane.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
             for (Node node : pane.getChildren()) {
@@ -59,51 +58,13 @@ public class GameFieldController {
                         System.out.println("Node: " + node + " at " + c1 + "/" + c2);
 
                         makeMove(c1, c2);
-                        insertImage((ImageView) node, null);
+                        insertImage((ImageView) node);
                         if (win()) {
-                            stopGameAndDisplayWinner();
+                            stopGameAndDisplayWinner(false);
                         } else if (draw()) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            System.out.println(gameField);
-
-                            alert.setTitle("GAME OVER");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Nobody win");
-
-                            alert.showAndWait();
+                            stopGameAndDisplayWinner(true);
                         }
                         updateCounter();
-                        if (counter == 3) {
-                            if (mode.equals(GAME_MODE.twoPlayers) || mode.equals(GAME_MODE.onePlayer)) {
-                                bot1.makeMove();
-                                insertImage((ImageView) node, bot1);
-
-                                if (win()) {
-                                    stopGameAndDisplayWinner();
-                                }
-
-                            }
-                        } else if (counter == 2) {
-                            if (mode.equals(GAME_MODE.onePlayer)) {
-
-                                bot2.makeMove();
-                                insertImage((ImageView) node, bot2);
-
-                                if (win()) {
-                                    stopGameAndDisplayWinner();
-                                }
-
-                                updateCounter();
-
-                                bot1.makeMove();
-                                insertImage((ImageView) node, bot1);
-
-                                if (win()) {
-                                    stopGameAndDisplayWinner();
-                                }
-
-                            }
-                        }
 
                     }
                 }
@@ -113,6 +74,7 @@ public class GameFieldController {
 
     }
 
+    //Проверка на ничью
     private boolean draw() {
         for (int[] i : gameField) {
             for (int k : i) {
@@ -205,37 +167,73 @@ public class GameFieldController {
     }
 
     //Вставляем изображение
-    private void insertImage(ImageView cell, Bot bot) {
-        if (bot != null) {
-            cell.setImage(new Image(bot.getCounter() + ".jpg"));
-        } else {
-            switch (counter) {
-                case 1:
-                    cell.setImage(new Image("/view/1.png"));
-                    //вставить х
-                    break;
-                case 2:
-                    cell.setImage(new Image("/view/2.jpg"));
-                    //вставить о
-                    break;
-
-            }
+    private void insertImage(ImageView cell) {
+        switch (counter) {
+            case 1:
+                cell.setImage(new Image("/gamefield/1.png"));
+                //вставить х
+                break;
+            case 2:
+                cell.setImage(new Image("/gamefield/2.jpg"));
+                //вставить о
+                break;
         }
     }
 
     //Заканчиваем игру
-    private void stopGameAndDisplayWinner() {
+    private void stopGameAndDisplayWinner(boolean draw) {
+        final Stage dialog = new Stage();
+        dialog.setTitle("Game Over");
+        dialog.setMinWidth(350);
+        dialog.setMinHeight(200);
+        dialog.setWidth(350);
+        dialog.setHeight(200);
+        Button yes = new Button("Restart");
+        Button no = new Button("Exit");
+        Label displayLabel;
+        if (!draw) {
+            displayLabel = new Label("Player" + counter + " win!");
+        } else {
+            displayLabel = new Label("Nobody win!");
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        System.out.println(gameField);
+        }
+        displayLabel.setFont(Font.font(null, FontWeight.BOLD, 14));
 
-        alert.setTitle("GAME OVER");
-        alert.setHeaderText(null);
-        alert.setContentText("Player" + counter + " win!");
-
-        alert.showAndWait();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner((Stage) Main.stage.getScene().getWindow());
 
 
+        yes.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> {
+                    dialog.close();
+                    goTo(Main.stage, "/gamefield/gameField.fxml");
+                });
+        no.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> {
+                    dialog.close();
+                    System.exit(0);
+                });
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(displayLabel, yes, no);
+        layout.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(layout);
+        dialog.setScene(scene);
+        dialog.show();
+
+
+    }
+
+    private void goTo(Stage primaryStage, String path) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource(path));
+        } catch (IOException ignored) {
+        }
+        primaryStage.setTitle("GAME");
+        Scene scene = new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 
