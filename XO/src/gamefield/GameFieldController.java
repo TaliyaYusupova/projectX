@@ -149,7 +149,7 @@ public class GameFieldController {
             sum2 *= gameField[i][gameField.length - i - 1];
         }
 
-        return sum1 == 1 || sum2 == 8;
+        return sum1 == 1 || sum2 == 8 || sum1 == 8 || sum2 == 1;
     }
 
 
