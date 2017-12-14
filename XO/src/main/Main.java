@@ -49,10 +49,9 @@ public class Main extends Application {
                 newGame,options,exitGame
         );
         MenuItem sound = new MenuItem("SOUND", 400, 100, 27);
-        MenuItem video = new MenuItem("VIDEO", 400, 100, 27);
         MenuItem optionsBack = new MenuItem("BACK", 400, 100, 27);
         SubMenu optionsMenu = new SubMenu(
-                sound,video,optionsBack
+                sound,optionsBack
         );
         MenuItem NG2 = new MenuItem("2 X 2", 400, 100, 27);
         MenuItem NG3 = new MenuItem("GAME WITH BOT", 400, 100, 27);
@@ -71,6 +70,7 @@ public class Main extends Application {
             }
         });
         options.setOnMouseClicked(event->menuBox.setSubMenu(optionsMenu));
+        sound.setOnMouseClicked(event -> mediaPlayer.pause());
         exitGame.setOnMouseClicked(event-> System.exit(0));
         optionsBack.setOnMouseClicked(event->menuBox.setSubMenu(mainMenu));
         NG4.setOnMouseClicked(event-> menuBox.setSubMenu(mainMenu));
