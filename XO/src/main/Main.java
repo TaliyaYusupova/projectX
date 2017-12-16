@@ -20,6 +20,8 @@ import tools.Constants;
 
 import java.io.File;
 
+import static tools.Constants.APP_NAME;
+
 public class Main extends Application {
     public static Stage stage;
 
@@ -70,7 +72,13 @@ public class Main extends Application {
             }
         });
         options.setOnMouseClicked(event->menuBox.setSubMenu(optionsMenu));
-        sound.setOnMouseClicked(event -> mediaPlayer.pause());
+        sound.setOnMouseClicked(event -> {
+            if (mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)){
+                mediaPlayer.pause();
+            }else {
+                mediaPlayer.play();
+            }
+        });
         exitGame.setOnMouseClicked(event-> System.exit(0));
         optionsBack.setOnMouseClicked(event->menuBox.setSubMenu(mainMenu));
         NG4.setOnMouseClicked(event-> menuBox.setSubMenu(mainMenu));
@@ -103,7 +111,7 @@ public class Main extends Application {
 
     public void goTo(Stage primaryStage, String path) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(path));
-        primaryStage.setTitle("GAME");
+        primaryStage.setTitle(APP_NAME);
         Scene scene = new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();

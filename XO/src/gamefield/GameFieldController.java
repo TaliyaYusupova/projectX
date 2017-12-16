@@ -22,6 +22,7 @@ import tools.Constants;
 
 import java.io.IOException;
 
+import static tools.Constants.APP_NAME;
 import static tools.Constants.GAME_FIELD_LENGTH;
 import static tools.Constants.GAME_FIELD_WIDTH;
 
@@ -36,6 +37,7 @@ public class GameFieldController {
     @FXML
     public void initialize() {
         fillGameField();
+        pane.setGridLinesVisible(true);
         //Отслеживание нажатий
         pane.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
             for (Node node : pane.getChildren()) {
@@ -174,7 +176,7 @@ public class GameFieldController {
                 //вставить х
                 break;
             case 2:
-                cell.setImage(new Image("/gamefield/2.jpg"));
+                cell.setImage(new Image("/gamefield/2.png"));
                 //вставить о
                 break;
         }
@@ -230,7 +232,7 @@ public class GameFieldController {
             root = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException ignored) {
         }
-        primaryStage.setTitle("GAME");
+        primaryStage.setTitle(APP_NAME);
         Scene scene = new Scene(root, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
